@@ -5,13 +5,15 @@
         </router-link>
 
         <nav>
-            <button @click="navIsOpen = !navIsOpen" 
-            style="position: absolute;left: 0px;transform: translateX(-100%);" 
-            v-html="navIsOpen ? 'close nav' : 'open nav'">
+            <button class="mobile-open-nav"
+                @click="navIsOpen = !navIsOpen">
+                <icon :name="navIsOpen ? 'close-sm' : 'burger'" />
             </button>
             <ul class="nav-ul">
                 <li class="nav-li dropdown-li">
-                    <router-link class="nav-a" to="/">Home \/</router-link>
+                    <router-link class="nav-a" to="/">
+                        Home <icon :name="'chevron-down'" />
+                    </router-link>
 
                     <div class="dropdown-nav">
                         <div class="dropdown-nav__content">
@@ -92,11 +94,18 @@ export default {
     background-color: rgba(0,0,0,0.44);
     display: none;
 }
+.mobile-open-nav{
+    position: absolute;
+    left: 0px;
+    transform: translateX(-100%);
+}
 header{
     background-color: $main-color;
     display: flex;
     justify-content: space-between;
     align-items: center;
+    z-index: 99;
+    position: relative;
     .header-logo{
         padding: 10px;
     }
@@ -148,8 +157,6 @@ header{
                     }
                 }
                 .nav-a{  
-                    display: block;
-                    font-family: "Roboto", Sans-serif;
                     font-size: 14px;
                     font-weight: 400;
                     text-transform: uppercase;
@@ -159,6 +166,8 @@ header{
                     padding: 25px 0px 25px 0px;
                     margin: 0px 0px 0px 30px;
                     color:#fff;
+                    display: flex;
+                    align-items: center;
                     &:hover{
                         border-color: #ffffff;
                     }

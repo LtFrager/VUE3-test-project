@@ -5,23 +5,38 @@
       <ContentPromoElement 
       style="grid-area: 1 / 1 / 3 / 2;"
       :bgImage="'https://ld-wp.template-help.com/woocommerce_prod-20719/v2/wp-content/uploads/2018/11/bg1.png'" 
-      :title="'Title 1'" 
-      :underTitle="'Subtitle 1'" 
-      :link="'/'" />
+      :title="'Title 1'">
+        <template v-slot:upper-heading>
+          subtitle
+        </template>
+        <template v-slot:actions>
+          <my-button :link="'/'">Check more</my-button>
+        </template>
+      </ContentPromoElement>
 
       <ContentPromoElement
       style="grid-area: 1 / 2 / 2 / 3;" 
       :bgImage="'https://ld-wp.template-help.com/woocommerce_prod-20719/v2/wp-content/uploads/2018/11/bg2.png'" 
-      :title="'Title 2'" 
-      :underTitle="'Subtitle 2'" 
-      :link="'/'" />
+      :title="'Title 2'">
+         <template v-slot:upper-heading>
+          subtitle
+        </template>
+        <template v-slot:actions>
+          <my-button :link="'/'">Check more</my-button>
+        </template>
+      </ContentPromoElement>
 
       <ContentPromoElement 
       style="grid-area: 2 / 2 / 3 / 3;"
       :bgImage=" 'https://ld-wp.template-help.com/woocommerce_prod-20719/v2/wp-content/uploads/2018/11/bg3.png'" 
-      :title="'Title 3'" 
-      :underTitle="'Subtitle 3'" 
-      :link="'/'" />
+      :title="'Title 3'">
+         <template v-slot:upper-heading>
+          subtitle
+        </template>
+        <template v-slot:actions>
+          <my-button :link="'/'">Check more</my-button>
+        </template>
+      </ContentPromoElement>
     </div>
     
    <div class="container">

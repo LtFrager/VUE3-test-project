@@ -15,6 +15,11 @@
 </script>
 
 <style lang="scss" scoped>
+.icon-button{
+    padding: 11px;
+    margin-left: 10px;
+    font-size: 13px;
+}
 button, a{
     font-style: normal;
     font-weight: 900;

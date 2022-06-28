@@ -1,7 +1,7 @@
 <template>
      <ul class="vertical-list">
         <li v-if="title" class="vertical-list__title">
-            <h3>Trololo</h3>
+            <h3 v-text="title"></h3>
         </li>
         <li class="vertical-list__item"  v-for="item in list">
             <router-link :to="item.link" v-text="item.text" />

@@ -2,6 +2,7 @@ import MyButton from '@/components/UI/MyButton.vue'
 import MySelect from '@/components/UI/MySelect.vue'
 import MyInput from '@/components/UI/MyInput.vue'
 import MyDialog from '@/components/UI/MyDialog.vue'
+import icon from '@/components/UI/MyIcon.vue'
 
 
 export default[
@@ -9,4 +10,5 @@ export default[
     MySelect,
     MyInput,
     MyDialog,
+    icon
 ]

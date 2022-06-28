@@ -50,6 +50,7 @@ export default{
     width: calc(100%/2 - 20px);
     flex: 0 0 calc(100%/2);
     position: relative;
+    margin: auto;
     @media (max-width: 940px){
         max-width: calc(100% - 20px);
         width: calc(100% - 20px);

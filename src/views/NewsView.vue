@@ -1,36 +1,48 @@
 <template>
   <div class="container">
+    <div class="actions">
+      <div style="width: 100%;display:flex;gap:20px">
+        <my-input style="width:100%"
+          :placeholder="'Enter keyword search'"
+          :icon="'search'" 
+          :model-value="searchValue" 
+          @update:model-value="setSearchValue"
+        />
+
+        <my-select :options="selectOptions"
+          :model-value="selectedSort" 
+          @update:model-value="setSelectedSort"
+        />
+      </div>
+
+      <my-button class="open-aside-btn icon-button" 
+        @click="sidebarIsOpen = !sidebarIsOpen">
+        <icon :name="'list-ul'" />
+      </my-button>
+    </div>
+
     <div class="news">
       <NewsList :isLoading="newsLoading" :data="sortedAndSearchedNews" />
-
       <div ref="observer" class="observer"></div>
     </div>
 
-    <aside>
-      <my-input placeholder="Enter keyword search" 
-        :model-value="searchValue" 
-        @update:model-value="setSearchValue"
-      />
-
-      <my-select :options="selectOptions"
-        :model-value="selectedSort" 
-        @update:model-value="setSelectedSort"
-      />
-
-      <my-button @click="scrollToTop()" class="to-top">To top</my-button>
-    </aside>
+    <NewsAside :class="sidebarIsOpen ? 'opened' : ''" />
+    <!-- <my-button @click="scrollToTop()" class="to-top">To top</my-button> -->
   </div>
-  </template>
+</template>
 
 <script>
+import NewsAside from '@/components/news/NewsAside.vue'
 import NewsList from '@/components/news/NewsList.vue'
 import { mapState, mapGetters, mapActions, mapMutations } from 'vuex'
 export default{
   components:{
     NewsList,
+    NewsAside
   },
   data(){
     return{
+      sidebarIsOpen:false,
       selectOptions:[
         { name:'title', value:'title' },
         { name:'body', value:'body' }
@@ -61,6 +73,7 @@ export default{
     threshold: 1.0
     }
     const callback = (entries, observer) => {
+      console.log('observer');
         if(entries[0].isIntersecting && this.page < this.totalPages){
           this.loadMoreNews()
         }
@@ -88,26 +101,43 @@ export default{
 .container{
   display: flex;
   flex-wrap: wrap;
-}
-
-.news{
-    flex: 0 0 75%;
-     @media (max-width: 940px){
-      flex: 0 0 100%;
+  .actions{
+    display: flex;
+    gap: 20px;
+    margin-top: 20px;
+    width: 100%;
+    .open-aside-btn{
+      display: none;
+      @media (max-width: 940px){
+        display: block;
+      }
     }
-}
+  }
+  .news{
+      margin-top: 20px;
+      flex: 0 0 75%;
+      @media (max-width: 940px){
+        flex: 0 0 100%;
+        order: 2;
+      }
+  }
 
-aside{
+  aside{
     flex: 0 0 25%;
+    transition: .5s;
     @media (max-width: 940px){
       flex: 0 0 100%;
+      order: 1;
+      opacity: 0;
+      height: 0;
+      &.opened{
+        opacity: 1;
+        height: 100%;
+      }
     }
+  }
 }
-.to-top{
-  position: fixed;
-  bottom: 20px;
-  right: 20px;
-}
+
 .observer{
   width: 100%;
 }
