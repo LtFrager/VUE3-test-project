@@ -69,39 +69,6 @@ export const newsModule = {
                 console.log(error);
             }
         }
-
-
-
-        // async fetchNews({state, commit}){
-        //     try {
-        //       commit('setPage', 1)
-        //       const response = await axios.get(state.url , {
-        //         params:{
-        //           _page: state.page,
-        //           _limit: state.limit 
-        //         }
-        //       })
-        //       commit('setTotalPages', Math.ceil(response.headers['x-total-count'] / state.limit))
-        //       commit('setNews', response.data)
-        //     } catch (error) {
-        //       console.log(error);
-        //     }
-        // },
-      
-        // async loadMoreNews({state,commit}){
-        //     try {
-        //         commit('setPage', state.page += 1)
-        //         const response = await axios.get(state.url , {
-        //         params:{
-        //             _page: state.page,
-        //             _limit: state.limit 
-        //         }
-        //         })
-        //         commit('setNews' ,  [...state.news, ...response.data])
-        //     } catch (error) {
-        //         console.log(error);
-        //     }
-        // }
     },
     namespaced: true
 }

@@ -41,6 +41,9 @@ export default {
       box-shadow: 0 5px 32px rgb(103 122 141 / 17%);
     }
   }
+  .icon-button{
+        margin-left: 10px;
+  }
 }
 
 

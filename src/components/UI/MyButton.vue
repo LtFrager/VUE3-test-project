@@ -17,7 +17,6 @@
 <style lang="scss" scoped>
 .icon-button{
     padding: 11px;
-    margin-left: 10px;
     font-size: 13px;
 }
 button, a{
@@ -25,7 +24,6 @@ button, a{
     font-weight: 900;
     font-size: 11px;
     line-height: 1;
-    font-family: Roboto, sans-serif;
     letter-spacing: 1px;
     color: #ffffff;
     background-color: $main-color;

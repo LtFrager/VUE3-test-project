@@ -1,4 +1,10 @@
 <template>
+  <ContentPromoElement
+      class="page-promo"
+      :bgImage="'https://ld-wp.template-help.com/woocommerce_prod-20719/v2/wp-content/uploads/2018/11/bg2.png'" 
+      :title="'News'">
+  </ContentPromoElement>
+
   <div class="container">
     <div class="actions">
       <div style="width: 100%;display:flex;gap:20px">
@@ -23,22 +29,26 @@
 
     <div class="news">
       <NewsList :isLoading="newsLoading" :data="sortedAndSearchedNews" />
-      <div ref="observer" class="observer"></div>
+    
     </div>
 
     <NewsAside :class="sidebarIsOpen ? 'opened' : ''" />
     <!-- <my-button @click="scrollToTop()" class="to-top">To top</my-button> -->
   </div>
+
+  <div v-intersection="loadMoreNews" class="observer"></div>
 </template>
 
 <script>
+import ContentPromoElement from '@/components/ContentPromoElement.vue'
 import NewsAside from '@/components/news/NewsAside.vue'
 import NewsList from '@/components/news/NewsList.vue'
 import { mapState, mapGetters, mapActions, mapMutations } from 'vuex'
 export default{
   components:{
     NewsList,
-    NewsAside
+    NewsAside,
+    ContentPromoElement
   },
   data(){
     return{
@@ -57,29 +67,21 @@ export default{
     }),
     ...mapActions({
       initNews: 'news/initNews',
-      loadMoreNews: 'news/loadMoreNews',
+      fetchNews: 'news/loadMoreNews',
     }),
     scrollToTop(){
       window.scrollTo({ top: 0, behavior: 'smooth' });
+    },
+    loadMoreNews(){
+      if(this.page < this.totalPages){
+        this.fetchNews()
+      }
     }
   },
   mounted(){
     this.setLimit(10)
     this.initNews()
-    this.loadMoreNews()
-
-    const options = {
-    rootMargin: '0px',
-    threshold: 1.0
-    }
-    const callback = (entries, observer) => {
-      console.log('observer');
-        if(entries[0].isIntersecting && this.page < this.totalPages){
-          this.loadMoreNews()
-        }
-    };
-    const observer = new IntersectionObserver(callback, options);
-    observer.observe(this.$refs.observer)
+    this.fetchNews()
   },
   computed:{
      ...mapState({
@@ -140,5 +142,6 @@ export default{
 
 .observer{
   width: 100%;
+  height: 20px;
 }
 </style>

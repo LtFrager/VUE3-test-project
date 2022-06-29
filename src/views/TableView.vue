@@ -1,4 +1,18 @@
 <template>
+    <ContentPromoElement
+        class="page-promo"
+        :bgImage="'https://ld-wp.template-help.com/woocommerce_prod-20719/v2/wp-content/uploads/2018/11/bg2.png'" 
+        :title="'News'">
+    </ContentPromoElement>
+
+    <div class="container">
+         <MyTable :headers="TableData.headers" :rows="TableData.rows" @editRow="editRow" @removeRow="removeRow">
+        <template v-slot:table-legend>
+            Table name | 
+            <button @click="CreateTableItemDialog = true, this.clearForm">Add data to table</button> 
+        </template>
+    </MyTable>
+    </div>
     <my-dialog v-model:show="CreateTableItemDialog">
         <form @submit.prevent>
             <my-input placeholder="Name" 
@@ -17,21 +31,18 @@
         </form>
     </my-dialog>
 
-    <MyTable :headers="TableData.headers" :rows="TableData.rows" @editRow="editRow" @removeRow="removeRow">
-        <template v-slot:table-legend>
-            Table name | 
-            <button @click="CreateTableItemDialog = true, this.clearForm">Add data to table</button> 
-        </template>
-    </MyTable>
+   
 </template>
 
 <script>
+import ContentPromoElement from '@/components/ContentPromoElement.vue'
 import { mapState, mapGetters, mapActions, mapMutations } from 'vuex'
 import MyTable from "@/components/tables/MyTable.vue"
 import axios from "axios"
 export default {
     components:{
-        MyTable
+        MyTable,
+        ContentPromoElement
     },
     data(){
         return{
@@ -119,5 +130,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
+.container{
+    margin-top: 20px;
+}
 </style>
