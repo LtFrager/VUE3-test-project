@@ -27,7 +27,7 @@ button, a{
     letter-spacing: 1px;
     color: #ffffff;
     background-color: $main-color;
-    display: inline-block;
+    display: flex;
     max-width: 100%;
     padding: 16px 34px;
     cursor: pointer;

@@ -2,18 +2,26 @@
     <ContentPromoElement
         class="page-promo"
         :bgImage="'https://ld-wp.template-help.com/woocommerce_prod-20719/v2/wp-content/uploads/2018/11/bg2.png'" 
-        :title="'News'">
+        :title="'Table'">
     </ContentPromoElement>
 
     <div class="container">
-         <MyTable :headers="TableData.headers" :rows="TableData.rows" @editRow="editRow" @removeRow="removeRow">
-        <template v-slot:table-legend>
-            Table name | 
-            <button @click="CreateTableItemDialog = true, this.clearForm">Add data to table</button> 
-        </template>
-    </MyTable>
+        <MyTable :headers="tableHeaders" 
+            :rows="tableRows"
+            :pagination="{
+                page:tablePage,
+                total:tableTotalPages
+            }"
+            @editRow="editRow" 
+            @removeRow="removeRow"
+        >
+            <template v-slot:table-legend>
+                Table name | 
+                <button @click="createTableItemDialog = true, this.clearForm">Add data to table</button> 
+            </template>
+        </MyTable>
     </div>
-    <my-dialog v-model:show="CreateTableItemDialog">
+    <my-dialog v-model:show="createTableItemDialog">
         <form @submit.prevent>
             <my-input placeholder="Name" 
                 :model-value="formName"
@@ -27,11 +35,13 @@
                 :model-value="formBody"
                 @update:model-value="setBody"
             />
-            <button type="submit" @click="addDataToTable()">Save</button>
+            <my-button type="submit" 
+                @click="addUpdateRow()"
+            >
+                Save
+            </my-button>
         </form>
     </my-dialog>
-
-   
 </template>
 
 <script>
@@ -46,16 +56,13 @@ export default {
     },
     data(){
         return{
-            CreateTableItemDialog: false,
-            TableData: {
-                headers:[
-                    { type:'name', text:'User' },
-                    { type:'email', text:'E-mail' },
-                    { type:'body', text:'Message' },
-                ],
-            },
-            TablePage: 1,
-            TablePagesTotal: 0
+            createTableItemDialog: false,
+            TableHeaders:[
+                { type:'id', text:'id' },
+                { type:'name', text:'User' },
+                { type:'email', text:'E-mail' },
+                { type:'body', text:'Message' }
+            ],
         }
     },
     methods:{
@@ -64,54 +71,38 @@ export default {
             setName: 'tabelForm/setName',
             setEmail: 'tabelForm/setEmail',
             setBody: 'tabelForm/setBody',
+
+            setTableHeaders:'tabel/setTableHeaders',
+            setTablePerpage:'tabel/setTablePerpage'
         }),
         ...mapActions({
             clearForm: 'tabelForm/clearForm',
+            fetchTable: 'tabel/fetchTable',
+            addUpdateRow: 'tabel/addUpdateRow',
+            removeRow: 'tabel/removeRow'
         }),
-        async fetchTable(){
-            try {
-                const response = await axios.get('https://jsonplaceholder.typicode.com/comments', {
-                    params:{
-                        _page: 1,
-                        _limit: 10,
-                    }
-                })
-                this.TableData.rows = response.data
-            } catch (error) {
-                console.log(error);
-            }
-        },
 
-        addDataToTable(){
-            const rowData = {
-                    id: null ? this.formId : Date.now(),
-                    name: this.formName,
-                    email: this.formEmail,
-                    body: this.formBody
-            }
-            const rowIndex = this.TableData.rows.findIndex(x => x.id == this.formId)
-            if(rowIndex !== -1){
-                this.TableData.rows[rowIndex] = rowData
-            } else {
-                this.TableData.rows.push(rowData)
-            }
-            this.CreateTableItemDialog = false
+        addUpdateRow(){
+            this.setTableHeaders({
+                id: (this.formId !== null) ? this.formId: Date.now(),
+                name: this.formName,
+                email: this.formEmail,
+                body: this.formBody
+            })
+            this.createTableItemDialog = false
         },
-
-        removeRow(row) {
-            this.TableData.rows = this.TableData.rows.filter(r => r.id !== row.id)
-        },
-
+        
         editRow(row){
             this.setId(row.id)
             this.setName(row.name)
             this.setEmail(row.email)
             this.setBody(row.body)
-            this.CreateTableItemDialog = true
+            this.createTableItemDialog = true
         }
     },
     mounted(){
         this.fetchTable()
+        this.setTableHeaders(this.TableHeaders)
     },
     computed:{
         ...mapState({
@@ -119,10 +110,15 @@ export default {
             formName: state => state.tabelForm.name,
             formEmail: state => state.tabelForm.email,
             formBody: state => state.tabelForm.body,
+
+            tableHeaders: state => state.tabel.headers,
+            tableRows: state => state.tabel.rows,
+            tablePage: state => state.tabel.page,
+            tableTotalPages: state => state.tabel.totalPages
         }),
     },
     watch: {
-        CreateTableItemDialog(newValue, oldValue) {
+        createTableItemDialog(newValue, oldValue) {
             if(!newValue) return this.clearForm()
         }
     },
@@ -131,6 +127,5 @@ export default {
 
 <style lang="scss" scoped>
 .container{
-    margin-top: 20px;
 }
 </style>
