@@ -15,10 +15,6 @@
             @editRow="editRow" 
             @removeRow="removeRow"
         >
-            <template v-slot:table-legend>
-                Table name | 
-                <button @click="createTableItemDialog = true, this.clearForm">Add data to table</button> 
-            </template>
         </MyTable>
     </div>
     <my-dialog v-model:show="createTableItemDialog">
@@ -91,7 +87,7 @@ export default {
             })
             this.createTableItemDialog = false
         },
-        
+
         editRow(row){
             this.setId(row.id)
             this.setName(row.name)
@@ -117,11 +113,11 @@ export default {
             tableTotalPages: state => state.tabel.totalPages
         }),
     },
-    watch: {
-        createTableItemDialog(newValue, oldValue) {
-            if(!newValue) return this.clearForm()
-        }
-    },
+    // watch: {
+    //     createTableItemDialog(newValue, oldValue) {
+    //         if(!newValue) return this.clearForm()
+    //     }
+    // },
 }
 </script>
 

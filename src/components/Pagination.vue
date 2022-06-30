@@ -1,5 +1,12 @@
 <template>
      <div class="pagination">
+        <my-button :value="1" 
+            v-show="page > 1" 
+            class="icon-button" 
+            @click="goToPage"
+        >
+            First
+        </my-button>
         <my-button v-show="page > 1" 
             class="icon-button" 
             @click="prevPage"
@@ -7,7 +14,7 @@
             Prev
         </my-button>
 
-        <my-button class="icon-button" 
+        <my-button v-show="item < page + 4 && item > page - 4" class="icon-button" 
             :value="item" 
             v-for="item in total" 
             :class="{ active: (page == item) }" 
@@ -21,6 +28,13 @@
             @click="nextPage"
         >
             Next
+        </my-button>
+         <my-button :value="total" 
+            v-show="page < total"  
+            class="icon-button" 
+            @click="goToPage"
+        >
+            Last
         </my-button>
     </div>
 </template>

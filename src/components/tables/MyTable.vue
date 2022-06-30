@@ -1,6 +1,6 @@
 <template>
     <fieldset>
-        <legend>
+        <legend v-if="table-legend">
             <slot name="table-legend"></slot>
         </legend>
 
